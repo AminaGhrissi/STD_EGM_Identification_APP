@@ -1,0 +1,57 @@
+cm_train
+array([[22941,   708],\n       [ 1320, 22327]])
+cm_val
+array([[ 238,   47],\n       [ 333, 4758]])
+cm_test
+array([[ 224,   42],\n       [ 345, 4765]])
+cmn_train
+array([[0.97006216, 0.02993784],\n       [0.05582103, 0.94417897]])
+cmn_val
+array([[0.83508772, 0.16491228],\n       [0.06540955, 0.93459045]])
+cmn_test
+array([[0.84210526, 0.15789474],\n       [0.06751468, 0.93248532]])
+
+model.metrics_names
+['loss', 'tp', 'fp', 'tn', 'fn', 'accuracy', 'precision', 'recall', 'auc']
+test_scores_gen
+[0.30288215815311387, 4989.0, 387.0, 4989.0, 387.0, 0.9280134, 0.9280134, 0.9280134, 0.9512393]
+test_acc = test_scores_gen[6] = 0.9280134
+
+train_acc_calcul = (cm_train[0,0]+cm_train[1,1])/(cm_train[0,0]+cm_train[1,1]+cm_train[0,1]+cm_train[1,0])
+0.9571211096075778
+
+val_acc_calcul = (cm_val[0,0]+cm_val[1,1])/(cm_val[0,0]+cm_val[1,1]+cm_val[0,1]+cm_val[1,0])
+0.9293154761904762
+
+test_acc_calcul = (cm_test[0,0]+cm_test[1,1])/(cm_test[0,0]+cm_test[1,1]+cm_test[0,1]+cm_test[1,0])
+0.9280133928571429
+
+'train_acc = ' + str(training_acc[-1])
+'train_acc = 0.9518353'
+'train_AUC = ' + str(training_AUC[-1])
+'train_AUC = 0.97520685'
+'val_acc = ' + str(val_acc[-1])
+'val_acc = 0.92931545'
+'val_AUC = ' + str(val_AUC[-1])
+'val_AUC = 0.9508381'
+
+from sklearn.metrics import roc_auc_score
+
+y_train_pred = model.predict(x_train)
+y_val_pred = model.predict(x_val)
+y_test_pred = model.predict(x_test)
+
+y_train = tf.keras.utils.to_categorical(y_train, 2)
+y_val = tf.keras.utils.to_categorical(y_val, 2)
+y_test = tf.keras.utils.to_categorical(y_test, 2)
+
+train_AUC_calcul = roc_auc_score(y_train, y_train_pred)
+val_AUC_calcul = roc_auc_score(y_val, y_val_pred)
+test_AUC_calcul = roc_auc_score(y_test, y_test_pred)
+
+train_AUC_calcul
+0.9787687462726622
+val_AUC_calcul
+0.8994396716599986
+test_AUC_calcul
+0.9168659785471507

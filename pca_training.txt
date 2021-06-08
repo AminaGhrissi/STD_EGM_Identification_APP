@@ -1,0 +1,61 @@
+ros training dataset
+................
+Warning: using -h 0 may be faster
+*.
+Warning: using -h 0 may be faster
+*
+optimization finished, #iter = 17857
+obj = -24708.274115, rho = 0.936772
+nSV = 28365, nBSV = 27524
+Total nSV = 28365
+[LibSVM]Done.
+ros training dataset
+................
+Warning: using -h 0 may be faster
+*.
+Warning: using -h 0 may be faster
+*
+optimization finished, #iter = 17561
+obj = -22411.580920, rho = 0.832409
+nSV = 26389, nBSV = 25285
+Total nSV = 26389
+[LibSVM]Done.
+ros training dataset
+.................
+Warning: using -h 0 may be faster
+*.
+Warning: using -h 0 may be faster
+*
+optimization finished, #iter = 18097
+obj = -24712.176207, rho = 0.813409
+nSV = 28365, nBSV = 27485
+Total nSV = 28365
+[LibSVM]Done.
+ros training dataset
+................
+Warning: using -h 0 may be faster
+*..
+Warning: using -h 0 may be faster
+*.
+Warning: using -h 0 may be faster
+*
+optimization finished, #iter = 18955
+obj = -23701.787535, rho = 0.801089
+nSV = 27546, nBSV = 26490
+Total nSV = 27546
+[LibSVM]Done.
+ros training dataset
+................
+Warning: using -h 0 may be faster
+*...
+Warning: using -h 0 may be faster
+*..
+Warning: using -h 0 may be faster
+*
+optimization finished, #iter = 20531
+obj = -23099.210395, rho = 0.751706
+nSV = 26925, nBSV = 25765
+Total nSV = 26925
+[LibSVM]Done.
+evaluated
+findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.

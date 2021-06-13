@@ -189,7 +189,7 @@ def plots(model_dir, history):
     plt.clf()
 
 
-def eval_and_store_svm(model, model_dir, augment, elapsed, x_t_train, y_train, x_t_test, y_test, r):
+def eval_and_store_svm(model, model_dir, augment, x_t_train, y_train, x_t_test, y_test, r):
     y_train_pred = model.predict(x_t_train)
     y_test_pred = model.predict(x_t_test)
 
@@ -213,7 +213,6 @@ def eval_and_store_svm(model, model_dir, augment, elapsed, x_t_train, y_train, x
 
     with open(os.path.join(model_dir,'performance.txt'),'a') as f_conf:
         f_conf.write('augment or not with ros = ' + str(augment)+'\n')
-        f_conf.write('elaspsed time = ' + str(elapsed)+'\n')
         f_conf.write('Nb of PCs (r) = ' + str(r)+'\n')
 
         f_conf.write('train_acc = ' + str(training_acc)+'\n')

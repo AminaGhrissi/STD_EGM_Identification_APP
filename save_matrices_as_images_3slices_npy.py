@@ -1,3 +1,25 @@
+#################################################################################
+#
+#               University of Nice Côte d’Azur (UCA) -
+#               National Center of Scientific Research (CNRS) –
+#               CHU of Nice (CHUN) -
+#               Instituto Federal do Espirito Santo (IFES)
+#              Copyright © 2020 UCA, CNRS, CHUN, IFES  All Rights Reserved.
+#
+#     These computer program listings and specifications, herein, are
+#     the property of UCA, CNRS, CHUN and IFES  
+#     shall not be reproduced or copied or used in whole or in part as
+#     the basis for manufacture or sale of items without written permission.
+#     For a license agreement, please contact: https:#www.sattse.com/  
+#
+#################################################################################
+# To generate 2D binary images (plots of the 10 EGM channels)
+# 1) run 'save_matrices_as_images.py' 
+# 2) run 'save_PNGimages_as_BINimages.py'
+# To generate 3D binary images 
+# 3) run 'save_matrices_as_images_3slices_npy_npy.py' after 1) and 2)
+#################################################################################
+
 import matplotlib.pyplot as plt
 import os
 import pickle as pl

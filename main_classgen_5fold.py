@@ -51,23 +51,23 @@ session = InteractiveSession(config=config)
 """
 
 ## Set random seed for reproducibility
-seed = 7
+seed = 42
 np.random.seed(seed)
 
 ## Set metaparameters dictionary
 parameters = {
-        "is_it_CNN1D": False, ## boolean variable stating whether the model is a 1D CNN or not    
+        "is_it_CNN1D": True, ## boolean variable stating whether the model is a 1D CNN or not    
         "is_it_CNN2D": False, ## boolean variable stating whether the model is a 2D CNN or not
-        "is_it_CNN3D": True,  ## boolean variable stating whether the model is a 3D CNN or not
-        "architecture": "VGG16_EGM", ## name of the model architecture, can take: "pca_svm", "mlr",  "lenet", "LSTM_VAVp", "lenet_drop", "cnn_1D" or  "VGG16_EGM" 
-        "VAVp": False, ## boolean variable stating whether the input format is VAVp or not  
+        "is_it_CNN3D": False,  ## boolean variable stating whether the model is a 3D CNN or not
+        "architecture": "cnn_1D", ## name of the model architecture, can take: "pca_svm", "mlr",  "lenet", "LSTM_VAVp", "lenet_drop", "cnn_1D" or  "VGG16_EGM" 
+        "VAVp": True, ## boolean variable stating whether the input format is VAVp or not  
         "image": False, ## boolean variable stating whether the input format is a (2D) image or not  
-        "image3D": True, ## boolean variable stating whether the input format is a 3D image or not  
+        "image3D": False, ## boolean variable stating whether the input format is a 3D image or not  
         "tensorize": False, ## boolean variable stating whether to tensorize input the 10-channel EGM sample or not  
         "n_folds": 2,       ## number of folds in k-fold cross-validationn, 5 
         "learning_rate": 0.001, ## ad-hoc choice of the learning rate used in gradient descent optimization algorithm
         "batch_size": 32,       ## mini batch size for mini-batch gradient descent optimization algorithm, can be increased if more memory is allowed
-        "epochs": 1,            ## default used 100, max number of epochs in mini-batch gradient descent optimization algorithm
+        "epochs": 2,            ## default used 100, max number of epochs in mini-batch gradient descent optimization algorithm
         "augment" : True,       ## boolean variable stating whether to augment with oversampling or not 
         "monitor" : "val_loss", ## early stopping criterion of the training algorithm, can take: "val_auc", "val_loss" ...
         "patience" : 10,        ## number of epochs to wait before early stop if no progress on the validation set
@@ -75,7 +75,7 @@ parameters = {
         "num_classes" : 2,      ## number of classes: STD vs. non-STD
         "steps_per_epoch" : None, ## number of mini batchesto yield from generators before finishing the current epoch and moving to the next, None takes all data
         "validation_steps" : None, ## steps_per_epoch for the validation generator
-        "dim": (389, 515, 3) , ## dimensions of the transformed data to be processed by the model, depends on the model and the input format, can take: (389, 515), # (2500,12), # (2500, 1), # (1, 2500, 12), # (10, 10, 4), # (389, 515, 3) 
+        "dim": (2500, 1) , ## dimensions of the transformed data to be processed by the model, depends on the model and the input format, can take: (389, 515), # (2500,12), # (2500, 1), # (1, 2500, 12), # (10, 10, 4), # (389, 515, 3) 
         "shuffle": False, ## No shuffling of data within each mini batch for tracability 
         "kernel" : "rbf", ## SVM kernel type can be Gaussian, linear ... # https://scikit-learn.org/stable/modules/svm.html
         "C" : 1.0,        ## SVM regularization coefficient
@@ -89,7 +89,10 @@ if (parameters["is_it_CNN2D"] or parameters["is_it_CNN1D"]) and not (parameters[
     input_shape = tuple(input_shape)
 
 ## Directories
-model_dir = os.path.join('classif','optim_'+parameters["architecture"]+'_5fold')
+if not os.path.exists('classification'):
+        os.makedirs('classification')
+
+model_dir = os.path.join('classification','optim_'+parameters["architecture"]+'_5fold')
 ## Update filenames with respect to the settings
 if parameters["augment"]:
     model_dir += '_ros' 
@@ -196,7 +199,7 @@ for train_val, test in kfold.split(f_names, y_f_names):
         ## SVM classification
         clf = SVC(kernel = parameters["kernel"], C = parameters["C"],  verbose = True)
         clf.fit(x_t_train, y_train)
-        test_acc[fold_nb-1], test_AUC[fold_nb-1], test_TPR[fold_nb-1], test_TNR[fold_nb-1], test_PPV[fold_nb-1], test_NPV[fold_nb-1], test_F1[fold_nb-1] = eval_and_store_svm(clf, model_dir_kfold, parameters["augment"], elapsed, x_t_train, y_train, x_t_test, y_test, r[fold_nb-1])
+        test_acc[fold_nb-1], test_AUC[fold_nb-1], test_TPR[fold_nb-1], test_TNR[fold_nb-1], test_PPV[fold_nb-1], test_NPV[fold_nb-1], test_F1[fold_nb-1] = eval_and_store_svm(clf, model_dir_kfold, parameters["augment"], x_t_train, y_train, x_t_test, y_test, r[fold_nb-1])
 
     else:
         ## Generators
@@ -261,7 +264,6 @@ with open(os.path.join(model_dir,'performance_5fold.txt'),'a') as f_conf:
     f_conf.write('stddev_test_NPV = ' + str(stddev_test_NPV)+'\n')
     f_conf.write('stddev_test_F1 = ' + str(stddev_test_F1)+'\n')
 
-import pdb; pdb.set_trace() ## for debugging
 print("evaluated")
 
 

@@ -108,8 +108,8 @@ def read_pt(pt_name, VAVp, image, image3D, tensorize):
             label_STD_pat_pat_load = pl.load(ff)
     elif image3D:
         img_path = os.path.join('EGM_plots_3slices')
-        img_name = os.path.join(img_path, pt_name_nopath.split(".")[0]+'.dat')
-        egm_pat_pt_load = np.load(img_name) # egm_pat_pt_load_slice
+        img_name = os.path.join(img_path, pt_name_nopath.split(".")[0]+'.npy')
+        egm_pat_pt_load = np.load(img_name) 
 
         labels_path = os.path.join('labels')
         labels_name = os.path.join(labels_path,pt_name)
@@ -258,7 +258,7 @@ def adjust_batches_egms_SVM(f_names, batch_size, VAVp, image, image3D, tensorize
     # Outputs:    
     # f_names = f_names ensuring all mini batches are equal
     # labels = corresponding labels
-    nb_samples = len(f_names)
+    """nb_samples = len(f_names)
     labels = labels_of_files(f_names)
         
     if nb_samples % batch_size:
@@ -275,7 +275,30 @@ def adjust_batches_egms_SVM(f_names, batch_size, VAVp, image, image3D, tensorize
     labels = np.asarray(labels)
     arrays = np.asarray(arrays)
 
-    return f_names, labels #, arrays
+    return f_names, labels #, arrays"""
+    
+    nb_samples = len(f_names)
+    labels = []
+    arrays = []
+    for input_path in f_names:
+        x,y = read_pt(input_path, VAVp, image, image3D, tensorize)
+        labels.append(y)
+        arrays.append(x)
+        
+    if nb_samples % batch_size:
+        nb_comlementary_samples = batch_size - nb_samples % batch_size
+        comlementary_samples = np.random.randint(nb_samples, size=(nb_comlementary_samples))
+        complementry_f_names = [f_names[i] for i in comlementary_samples]
+        complementry_labels = [labels[i] for i in comlementary_samples]
+        complementry_arrays = [arrays[i] for i in comlementary_samples]
+        f_names = f_names + complementry_f_names
+        labels = labels + complementry_labels
+        arrays = arrays + complementry_arrays
+        
+    labels = np.asarray(labels)
+    arrays = np.asarray(arrays)
+
+    return f_names, labels, arrays
 
 ## Class for data generators: incremental allocation of memory for an optimal training/inference process
 class DataGenerator(tf.keras.utils.Sequence):
